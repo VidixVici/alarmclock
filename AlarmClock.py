@@ -6,7 +6,7 @@ import array as arr
 import pyperclip as pc 
 from tkinter import *
 import os
-
+# latest update: Add number of times alarm will sound
 
 
 def hoursAndMinutes(h, m, s):
@@ -52,6 +52,12 @@ class Window(Frame):
         secondsEntry.configure(bg='#09111D')
         secondsEntry.bind("<Button-1>", lambda e: secondsEntry.delete(0, tk.END))
         secondsEntry.insert(0, "0")
+
+        global offEntry
+        offEntry = tk.Entry()
+        offEntry.configure(bg='#09111D')
+        offEntry.bind("<Button-1>", lambda e: offEntry.delete(0, tk.END))
+        offEntry.insert(0, "10")
         
         # create labels and place in application window
 
@@ -70,6 +76,10 @@ class Window(Frame):
         secondsEntry.place(x=0, y=128)
         secondslabel.configure(bg='#09111D')
 
+        offlabel = tk.Label(text='How many times should the Alarm Ring?: ')
+        offlabel.place(x=0, y=157)
+        offEntry.place(x=0, y=180)
+        offlabel.configure(bg='#09111D')
 
         # place buttons created earlier to run functions
 
@@ -93,7 +103,7 @@ class Window(Frame):
         global m
         global s 
         global off
-        off = 100
+        off = offEntry.get()
         h = hoursEntry.get()
         m = minutesEntry.get()
         s = secondsEntry.get()
@@ -106,9 +116,11 @@ class Window(Frame):
             print(timer, end="\r")
 
         print('Timer Completed')
-        while off > 1:
+        while int(off) > 0:
             playsound('wow.mp3')
             playsound('annoying.mp3')
+            off = int(off) - 1
+            print(off, end="\r")
 
     def StopTimer(self):
         global off
